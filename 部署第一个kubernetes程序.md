@@ -82,6 +82,13 @@ spec:
 ```
 
 ## 4. create Ingress
+
+先使用
+```
+kubectl get pod nginx-ingress-controller-7995bd9c47-flxrm -n ingress-nginx -o wide
+```
+得到控制器分配在哪个node上。在我这个环境中被分配在enzyme1.fyre.ibm.com这个Node上
+
 ingress的文件内容
 ```
 apiVersion: extensions/v1beta1
@@ -92,7 +99,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-  - host: 172.16.18.145.nip.io
+  - host: enzyme1.fyre.ibm.com
     http:
       paths:
       - path:
@@ -100,9 +107,17 @@ spec:
           serviceName: hostnames
           servicePort: 80
 ``` 
-172.16.18.145 是宿主机的一个ip，即集群中一个node的ip
 
+使用
+```
+kubectl get svc -n ingress-nginx
+```
+得到暴露出来的端口。
 
-这样使用curl 172.16.18.145.nip.io访问时，就能够获取到相应的pod的hostname
+| NAMESPACE | NAME | TYPE | CLUSTER-IP | EXTERNAL-IP | PORT(S) | AGE |
+| --- | --- | --- | --- | --- | --- | --- |
+| ingress-nginx | ingress-nginx | NodePort | 10.101.124.233 | <none> | 80:32041/TCP,443:32283/TCP | 7h15m |
+
+这样使用curl enzyme1.fyre.ibm.com:32041访问时，就能够获取到相应的pod的hostname
 
 ## 5.Service原理
