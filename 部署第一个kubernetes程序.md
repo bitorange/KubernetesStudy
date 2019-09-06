@@ -55,7 +55,12 @@ spec:
 
 ## 3. enable nginx Ingress
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
-再apply 下面的文件
+
+### 3.1 以NodePort的方式部署ingress
+如果以NodePort的方式部署ingress，需要apply 下面的文件
+https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
+
+文件内容是
 ```
 apiVersion: v1
 kind: Service
@@ -80,6 +85,36 @@ spec:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
 ```
+
+### 3.1 以LoadBalancer的方式部署ingress
+如果以NodePort的方式部署ingress，需要apply 下面的文件
+```
+kind: Service
+apiVersion: v1
+metadata:
+  name: ingress-nginx
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+spec:
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+    - name: https
+      port: 443
+      targetPort: https
+  externalIPs:
+    - 9.30.198.171    
+```
+
+自己指定了 externalIPs，这样就可以像minikube一样使用ingress了。 这种方式实际上是暴露了一个Node的ip，这种方式就不像第一种方式需要指定特定的端口，直接访问80或者443就可以了。
 
 ## 4. create Ingress
 
