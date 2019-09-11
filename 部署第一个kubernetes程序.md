@@ -147,3 +147,5 @@ spec:
 如果你在集群中使用NodePort的方式部署你的ingress service，那么你需要使用 enzyme1.fyre.ibm.com:3xxxx 去访问你的pod，这样你就能够获取到相应的pod的hostname。
 
 如果你在集群中使用LoadBalancer的方式部署你的ingress service，那么你需要使用 enzyme1.fyre.ibm.com:80,或者 enzyme1.fyre.ibm.com:443 去访问你的pod。
+
+## 5.Service原理
