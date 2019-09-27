@@ -199,4 +199,4 @@ status:
   - example-memcached-6fd7c98d8-g5k7v
   - example-memcached-6fd7c98d8-m7vn7
 ```
-可以注意到这里的status是返回的node的nname，这里与3.2中向memcached_types.go文件中添加的Status的值有关。
+可以注意到这里的status是返回的node name，这里与3.2中向memcached_types.go文件中添加的Status的值有关。
