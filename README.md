@@ -1,6 +1,8 @@
 # KubernetesStudy
 Learning k8s
 
-#Install kubernetes
+# Install kubernetes
 
-#Deploy the first application
+# Deploy the first application
+
+# Deploy the first operator
